@@ -19,7 +19,7 @@ public class Item : MonoBehaviour
     [HideInInspector]
     public GameObject weaponManager;
 
-    public bool playersWeapon; //<--was object
+    public bool playersWeapon; 
     
     public void Start()
     {
@@ -44,7 +44,7 @@ public class Item : MonoBehaviour
     {
         if (equipped)
         {
-            //perform weapon acts here
+            //perform weapon acts here, remove from hand
 
             if (Input.GetKeyDown(KeyCode.G))
                 equipped = false;

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Inventory : MonoBehaviour
+public class Inventory : MonoBehaviour, IItemContainer
 {
     private bool inventoryEnabled;
     public GameObject inventory;
@@ -32,7 +32,7 @@ public class Inventory : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.I))
             inventoryEnabled = !inventoryEnabled;
 
-        if(inventoryEnabled == true)
+        if (inventoryEnabled == true)
         {
             inventory.SetActive(true);
         }
@@ -40,12 +40,12 @@ public class Inventory : MonoBehaviour
         {
             inventory.SetActive(false);
         }
-        
+
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "Item")
+        if (other.tag == "Item")
         {
             GameObject itemPickedUp = other.gameObject;
             Item item = itemPickedUp.GetComponent<Item>();
@@ -82,6 +82,69 @@ public class Inventory : MonoBehaviour
         }
     }
 
+    /*public bool ContainsItem(Item item)
+    {
+        for (int i = 0; i < itemSlots.Length; i++)
+        {
+            if (itemSlots[i].Item == item)
+            {
+                return true;
+            }
+        }
+   */
+
+
+
+/*public bool RemoveItem(Item item)
+{
+for (int i = 0; i < itemSlots.Length; i++)
+{
+    if (itemSlots[i].Item == item)
+    {
+        itemSlots[i].Item = null;
+        return true;
+    }
+}
+}
+
+public bool AddItem(Item item)
+{
+for (int i = 0; i <itemSlots.Length; i++)
+{
+    if(itemSlots[i].Item == null)
+    {
+        itemSlots[i].Item = item;
+        return true;
+    }
+}           
+}
+
+public bool IsFull()
+{
+for (int i = 0; i < itemSlots.Length; i++)
+{
+    if (itemSlots[i].Item == null)
+    {
+        return false;
+    }
+}
+}
+
+public int ItemCount(Item item)
+{
+    int number = 0;
+    for (int i = 0; i < itemSlots.Length; i++)
+    {
+        if (itemSlots[i].Item == item)
+        {
+            number++;
+        }
+    }
+    return number;
+}
+
+
+*/
 
 
 
