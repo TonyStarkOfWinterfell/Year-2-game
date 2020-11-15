@@ -7,7 +7,7 @@ using UnityEngine;
 [Serializable]
 public struct ItemAmount
 {
-    public Item Item;
+    public Item item;
     [Range(1,999)]
     public int Amount;
 }
@@ -22,7 +22,7 @@ public class CraftRecipe : ScriptableObject
     {
         foreach (ItemAmount itemAmount in Materials)
         {
-            if (itemContainer.ItemCount(itemAmount.Item) < itemAmount.Amount)
+            if (itemContainer.ItemCount(itemAmount.item) < itemAmount.Amount)
             {
                 return false;
             }
@@ -38,7 +38,7 @@ public class CraftRecipe : ScriptableObject
             {
                 for (int i = 0; i < itemAmount.Amount; i++)
                 {
-                    itemContainer.RemoveItem(itemAmount.Item);
+                    itemContainer.RemoveItem(itemAmount.item);
                 }               
             }
 
@@ -46,7 +46,7 @@ public class CraftRecipe : ScriptableObject
             {
                 for (int i = 0; i < itemAmount.Amount; i++)
                 {
-                    itemContainer.AddItem(itemAmount.Item);
+                    itemContainer.AddItem(itemAmount.item);
                 }
             }
         }
