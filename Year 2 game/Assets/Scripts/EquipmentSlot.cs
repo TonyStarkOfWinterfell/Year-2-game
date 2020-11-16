@@ -1,7 +1,7 @@
 ﻿
 using UnityEngine;
 
-public class EquipmentSlot : BaseItemSlot
+public class EquipmentSlot : ItemSlot
 {
     public EquipmentType EquipmentType;
 

@@ -3,18 +3,17 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class BaseItemSlot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IEndDragHandler, IDragHandler, IDropHandler
+public class BaseItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler 
 {
-    [SerializeField] Image image;
+    [SerializeField] protected Image image;
+    [SerializeField] protected Text amountText;
 
+    public event Action<BaseItemSlot> OnPointerEnterEvent;
+    public event Action<BaseItemSlot> OnPointerExitEvent;
     public event Action<BaseItemSlot> OnRightClickEvent;
-    public event Action<BaseItemSlot> OnBeginDragEvent;
-    public event Action<BaseItemSlot> OnEndDragEvent;
-    public event Action<BaseItemSlot> OnDragEvent;
-    public event Action<BaseItemSlot> OnDropEvent;
 
-    private Color normalColor = Color.white;
-    private Color disabledColor = new Color(1, 1, 1, 0);
+    protected Color normalColor = Color.white;
+    protected Color disabledColor = new Color(1, 1, 1, 0);
 
     [SerializeField] Item _item;
     public Item Item
@@ -25,7 +24,7 @@ public class BaseItemSlot : MonoBehaviour, IPointerClickHandler, IBeginDragHandl
             _item = value;
             if (_item == null)
             {
-                image.sprite = null; // new
+                //image.sprite = null; // new potential problem fix
                 image.color = disabledColor;
             }
             else
@@ -37,6 +36,39 @@ public class BaseItemSlot : MonoBehaviour, IPointerClickHandler, IBeginDragHandl
 
         }
     }
+    
+    private int _amount;
+    public int Amount
+    {
+        get { return _amount; }
+        set
+        {
+            _amount = value;
+            //amountText.enabled = _item != null && _item.MaximumStacks > 1 && _amount > 1;
+            if (amountText.enabled)
+            {
+                amountText.text = _amount.ToString();
+            }
+        }
+    }
+        
+
+
+    protected virtual void OnValidate()
+    {
+        if (image == null)
+            image = GetComponent<Image>();
+
+        if (amountText == null)
+            amountText = GetComponentInChildren<Text>();
+    }
+       
+
+    public virtual bool CanRecieveItem(Item item)
+    {
+        return false;
+    }
+
 
     public void OnPointerClick(PointerEventData eventData)
     {
@@ -47,57 +79,15 @@ public class BaseItemSlot : MonoBehaviour, IPointerClickHandler, IBeginDragHandl
         }
     }
 
-    protected virtual void OnValidate()
+    public void OnPointerEnter(PointerEventData eventData)
     {
-        if (image == null)
-            image = GetComponent<Image>();
-        
+        if (OnPointerEnterEvent != null)
+            OnPointerEnterEvent(this);
     }
 
-    public virtual bool CanRecieveItem(Item item)
+    public void OnPointerExit(PointerEventData eventData)
     {
-        return true;
-    }
-
-    Vector2 originalPosition;
-
-    public void OnBeginDrag(PointerEventData eventData)
-    {
-        if (OnBeginDragEvent != null)
-        {
-            OnBeginDragEvent(this);
-        }
-
-        originalPosition = image.transform.position;
-        //Debug.Log(_item.name);
-    }
-
-    public void OnEndDrag(PointerEventData eventData)
-    {
-        if (OnEndDragEvent != null)
-        {
-            OnEndDragEvent(this);
-        }
-
-        image.transform.position = originalPosition;
-    }
-
-    public void OnDrag(PointerEventData eventData)
-    {
-        if (OnDragEvent != null)
-        {
-            OnDragEvent(this);
-        }
-
-        image.transform.position = Input.mousePosition;
-    }
-
-    public void OnDrop(PointerEventData eventData)
-    {
-        if (OnDropEvent != null)
-        {
-            OnDropEvent(this);
-        }
-        //throw new NotImplementedException();
+        if (OnPointerExitEvent != null)
+            OnPointerExitEvent(this);
     }
 }

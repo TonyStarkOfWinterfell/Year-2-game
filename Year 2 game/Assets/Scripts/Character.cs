@@ -7,7 +7,7 @@ public class Character : MonoBehaviour
     [SerializeField] EquipmentPanel equipmentPanel;
     [SerializeField] Image draggableItem;
 
-    private BaseItemSlot draggedSlot;
+    private BaseItemSlot dragItemSlot;
 
     private void Awake()
     {
@@ -52,7 +52,7 @@ public class Character : MonoBehaviour
     {
         if (itemSlot.Item != null)
         {
-            draggedSlot = itemSlot;
+            dragItemSlot = itemSlot;
             draggableItem.sprite = itemSlot.Item.Icon;
             draggableItem.transform.position = Input.mousePosition;
             draggableItem.enabled = true;
@@ -61,7 +61,7 @@ public class Character : MonoBehaviour
 
     private void EndDrag(BaseItemSlot itemSlot)
     {
-        draggedSlot = null;
+        dragItemSlot = null;
         draggableItem.enabled = false;
     }
 
@@ -75,13 +75,14 @@ public class Character : MonoBehaviour
     // chedk this out down
     private void Drop(BaseItemSlot dropItemSlot) 
     {
+        if (dragItemSlot == null) return;
 
-        if (dropItemSlot.CanRecieveItem(draggedSlot.Item) && draggedSlot.CanRecieveItem(dropItemSlot.Item))
+        if (dropItemSlot.CanRecieveItem(dragItemSlot.Item) && dragItemSlot.CanRecieveItem(dropItemSlot.Item))
         {
-            EquippableItem dragItem = draggedSlot.Item as EquippableItem;
+            EquippableItem dragItem = dragItemSlot.Item as EquippableItem;
             EquippableItem dropItem = dropItemSlot.Item as EquippableItem;
 
-            if (draggedSlot is EquipmentSlot)
+            if (dragItemSlot is EquipmentSlot)
             {
                 if (dragItem != null) dragItem.Unequip(this);
                 if (dropItem != null) dropItem.Equip(this);
@@ -105,8 +106,8 @@ public class Character : MonoBehaviour
             }
             */
             
-            Item draggedItem = draggedSlot.Item;
-            draggedSlot.Item = dropItemSlot.Item;
+            Item draggedItem = dragItemSlot.Item;
+            dragItemSlot.Item = dropItemSlot.Item;
             dropItemSlot.Item = draggedItem; 
         }
 

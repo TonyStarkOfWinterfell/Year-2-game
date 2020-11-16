@@ -13,7 +13,7 @@ public struct ItemAmount
 }
 
 [CreateAssetMenu]
-public class CraftRecipe : ScriptableObject
+public class CraftingRecipe : ScriptableObject
 {
     public List<ItemAmount> Materials;
     public List<ItemAmount> Results;
@@ -22,7 +22,7 @@ public class CraftRecipe : ScriptableObject
     {
         foreach (ItemAmount itemAmount in Materials)
         {
-            if (itemContainer.ItemCount(itemAmount.item) < itemAmount.Amount)
+            if (itemContainer.ItemCount(itemAmount.item.ID) < itemAmount.Amount)
             {
                 return false;
             }
@@ -38,7 +38,8 @@ public class CraftRecipe : ScriptableObject
             {
                 for (int i = 0; i < itemAmount.Amount; i++)
                 {
-                    itemContainer.RemoveItem(itemAmount.item);
+                    Item oldItem = itemContainer.RemoveItem(itemAmount.item.ID);
+                    Destroy(oldItem);
                 }               
             }
 
@@ -46,7 +47,7 @@ public class CraftRecipe : ScriptableObject
             {
                 for (int i = 0; i < itemAmount.Amount; i++)
                 {
-                    itemContainer.AddItem(itemAmount.item);
+                    itemContainer.AddItem(Instantiate(itemAmount.item));
                 }
             }
         }
