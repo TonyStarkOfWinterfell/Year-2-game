@@ -12,16 +12,21 @@ public class BaseItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
     public event Action<BaseItemSlot> OnPointerExitEvent;
     public event Action<BaseItemSlot> OnRightClickEvent;
 
+    
     protected Color normalColor = Color.white;
     protected Color disabledColor = new Color(1, 1, 1, 0);
 
-    [SerializeField] Item _item;
+    //item needs an amount somewhere 
+    protected Item _item;
     public Item Item
     {
         get { return _item;  }
         set
         {
             _item = value;
+
+            if (_item == null && Amount != 0) Amount = 0; //craftingUI non working fix?
+
             if (_item == null)
             {
                 //image.sprite = null; // new potential problem fix
@@ -44,11 +49,18 @@ public class BaseItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
         set
         {
             _amount = value;
-            //amountText.enabled = _item != null && _item.MaximumStacks > 1 && _amount > 1;
-            if (amountText.enabled)
+            if (_amount < 0) _amount = 0;
+            if (_amount == 0) Item = null;
+
+            if (amountText != null)
             {
-                amountText.text = _amount.ToString();
+                amountText.enabled = _item != null && _amount > 1;
+                if (amountText.enabled)
+                {
+                    amountText.text = _amount.ToString();
+                }
             }
+            
         }
     }
         
@@ -61,6 +73,11 @@ public class BaseItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
 
         if (amountText == null)
             amountText = GetComponentInChildren<Text>();
+    }
+
+    public virtual bool CanAddStack(Item item, int amount = 1)
+    {
+        return Item != null && Item.ID == item.ID;
     }
        
 

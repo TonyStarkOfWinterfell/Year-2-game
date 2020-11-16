@@ -17,6 +17,15 @@ public class EquippableItem : Item
     public EquipmentType EquipmentType;
     //variable for whats equiped
 
+    public override Item GetCopy()
+    {
+        return Instantiate(this);
+    }
+
+    public override void Destroy()
+    {
+        Destroy(this);
+    }
 
     public void Equip(Character c)
     {
