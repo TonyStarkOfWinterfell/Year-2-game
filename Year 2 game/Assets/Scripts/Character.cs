@@ -3,8 +3,8 @@ using UnityEngine.UI;
 
 public class Character : MonoBehaviour
 {
-    [SerializeField] Inventory inventory;
-    [SerializeField] EquipmentPanel equipmentPanel;
+    public Inventory inventory;
+    public EquipmentPanel equipmentPanel;
     [SerializeField] CraftingWindow craftingWindow;
     [SerializeField] Image draggableItem;
 
@@ -83,7 +83,7 @@ public class Character : MonoBehaviour
             AddStacks(dropItemSlot);
         }
 
-        else if (dropItemSlot.CanRecieveItem(dragItemSlot.Item) && dragItemSlot.CanRecieveItem(dropItemSlot.Item))
+        else if (dropItemSlot.CanReceiveItem(dragItemSlot.Item) && dragItemSlot.CanReceiveItem(dropItemSlot.Item))
         {
             SwapItems(dropItemSlot);
         }

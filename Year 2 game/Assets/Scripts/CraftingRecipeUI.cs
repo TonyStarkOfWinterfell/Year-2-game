@@ -89,7 +89,7 @@ public class CraftingRecipeUI : MonoBehaviour
             ItemAmount itemAmount = itemAmountList[i];
             BaseItemSlot itemSlot = itemSlots[slotIndex];
 
-            //itemSlot.Item = itemAmount.Item;
+            //itemSlot.Item = itemAmount.Item; //problem
             itemSlot.Amount = itemAmount.Amount;
             itemSlot.transform.parent.gameObject.SetActive(true);
             

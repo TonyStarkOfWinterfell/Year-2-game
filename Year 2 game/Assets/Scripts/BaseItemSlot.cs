@@ -12,7 +12,8 @@ public class BaseItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
     public event Action<BaseItemSlot> OnPointerExitEvent;
     public event Action<BaseItemSlot> OnRightClickEvent;
 
-    
+    protected bool isPointerOver;
+
     protected Color normalColor = Color.white;
     protected Color disabledColor = new Color(1, 1, 1, 0);
 
@@ -29,7 +30,7 @@ public class BaseItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
 
             if (_item == null)
             {
-                //image.sprite = null; // new potential problem fix
+                image.sprite = null; // new potential problem fix
                 image.color = disabledColor;
             }
             else
@@ -37,6 +38,12 @@ public class BaseItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
                 image.sprite = _item.Icon;
                 image.color = normalColor;
 
+            }
+
+            if (isPointerOver)
+            {
+                OnPointerExit(null);
+                OnPointerEnter(null);
             }
 
         }
@@ -73,7 +80,19 @@ public class BaseItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
 
         if (amountText == null)
             amountText = GetComponentInChildren<Text>();
+
+        //Item = _item;
+        //Amount = _amount;
     }
+    /*
+    protected virtual void OnDisable()
+    {
+        if (isPointerOver)
+        {
+            OnPointerExit(null);
+        }
+    }
+    */
 
     public virtual bool CanAddStack(Item item, int amount = 1)
     {
@@ -81,7 +100,7 @@ public class BaseItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
     }
        
 
-    public virtual bool CanRecieveItem(Item item)
+    public virtual bool CanReceiveItem(Item item)
     {
         return false;
     }
@@ -98,12 +117,16 @@ public class BaseItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        //isPointerOver = true;
+
         if (OnPointerEnterEvent != null)
             OnPointerEnterEvent(this);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
+        //isPointerOver = false;
+
         if (OnPointerExitEvent != null)
             OnPointerExitEvent(this);
     }
