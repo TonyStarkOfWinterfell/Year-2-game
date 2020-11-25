@@ -5,6 +5,9 @@ public class InventoryInput : MonoBehaviour
     [SerializeField] GameObject characterPanel;
     [SerializeField] GameObject playerHud;
     [SerializeField] KeyCode[] toggleInventoryKeys;
+
+    [SerializeField] private AudioClip buttonClickSFX;
+    
    
     void Update()
     {
@@ -12,6 +15,8 @@ public class InventoryInput : MonoBehaviour
         {
             if (Input.GetKeyDown(toggleInventoryKeys[i]))
             {
+                SoundManager.Instance.PlaySFX(buttonClickSFX, 1);
+
                 characterPanel.SetActive(!characterPanel.activeSelf);
                 playerHud.SetActive(!characterPanel.activeSelf);
 

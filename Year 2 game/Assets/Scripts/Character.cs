@@ -10,6 +10,8 @@ public class Character : MonoBehaviour
     [SerializeField] CraftingWindow craftingWindow;
     [SerializeField] Image draggableItem;
 
+    [SerializeField] private AudioClip buttonClickSFX;    
+
     private BaseItemSlot dragItemSlot;
 
     private void Awake()
@@ -35,6 +37,7 @@ public class Character : MonoBehaviour
 
     private void InventoryRightClick(BaseItemSlot itemSlot)
     {
+        SoundManager.Instance.PlaySFX(buttonClickSFX, 1);
         if (itemSlot.Item is EquippableItem)
         {
             Equip((EquippableItem)itemSlot.Item);
@@ -89,11 +92,13 @@ public class Character : MonoBehaviour
         if (dropItemSlot.CanAddStack(dragItemSlot.Item))
         {
             AddStacks(dropItemSlot);
+            SoundManager.Instance.PlaySFX(buttonClickSFX, 1);
         }
 
         else if (dropItemSlot.CanReceiveItem(dragItemSlot.Item) && dragItemSlot.CanReceiveItem(dropItemSlot.Item))
         {
             SwapItems(dropItemSlot);
+            SoundManager.Instance.PlaySFX(buttonClickSFX, 1);
         }
 
     }

@@ -11,6 +11,7 @@ public class ItemStash : ItemContainer
     private bool isOpen;
     private bool isInRange;
 
+   
     private Character character;
     
     protected override void OnValidate()
@@ -24,9 +25,9 @@ public class ItemStash : ItemContainer
         spriteRenderer.enabled = false;
     }
 
-    protected override void Start()
+    protected override void Awake()
     {
-        base.Start();
+        base.Awake();
         itemsParent.gameObject.SetActive(false);
     }
 
@@ -40,7 +41,13 @@ public class ItemStash : ItemContainer
             itemsParent.gameObject.SetActive(isOpen);
 
             if (isOpen)
+            {
                 character.OpenItemContainer(this);
+                
+            }
+                
+
+
             else
                 character.CloseItemContainer(this);
             

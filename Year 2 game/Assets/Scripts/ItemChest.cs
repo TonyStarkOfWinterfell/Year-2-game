@@ -12,6 +12,9 @@ public class ItemChest : MonoBehaviour
     private bool isInRange;
     private bool isEmpty;
 
+    [SerializeField] private AudioClip buttonClickSFX;
+    
+
     private void OnValidate()
     {
         if (inventory == null)
@@ -26,8 +29,10 @@ public class ItemChest : MonoBehaviour
 
     private void Update()
     {
-        if (isInRange && isEmpty && Input.GetKeyDown(itemPickUpKeyCode))
+        if (isInRange && !isEmpty && Input.GetKeyDown(itemPickUpKeyCode))
         {
+            Debug.Log("you have added stuff hopefully");
+            SoundManager.Instance.PlaySFX(buttonClickSFX, 1);
             Item itemCopy = item.GetCopy();
             if (inventory.AddItem(itemCopy))
             {
