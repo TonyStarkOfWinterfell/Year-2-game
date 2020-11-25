@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: first
   m_EditorClassIdentifier: 
   Materials:
-  - item: {fileID: 11400000, guid: 3cd58031414e7784c8c46c79e313bbaf, type: 2}
+  - Item: {fileID: 11400000, guid: 269cb978654f0f14dbc9d5529ee6e465, type: 2}
     Amount: 1
-  - item: {fileID: 11400000, guid: 9e85d7052c1354b4dbce7321fc21daf0, type: 2}
+  - Item: {fileID: 11400000, guid: 108b125302073cf4689bb71345268c3a, type: 2}
     Amount: 1
   Results:
-  - item: {fileID: 11400000, guid: 108b125302073cf4689bb71345268c3a, type: 2}
+  - Item: {fileID: 11400000, guid: 04e03352c465d4c49b6a29575553bd57, type: 2}
     Amount: 1

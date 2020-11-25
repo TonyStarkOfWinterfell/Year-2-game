@@ -1,54 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Serialization;
+﻿using UnityEngine;
+
 
 public class Inventory : ItemContainer
 {
-    [SerializeField] Item[] startingItems;
-    [SerializeField] Transform itemsParent;
-    //[SerializeField] BaseItemSlot[] itemSlots;
-
-    public event Action<BaseItemSlot> OnRightClickEvent;
-    public event Action<BaseItemSlot> OnBeginDragEvent;
-    public event Action<BaseItemSlot> OnEndDragEvent;
-    public event Action<BaseItemSlot> OnDragEvent;
-    public event Action<BaseItemSlot> OnDropEvent;
-
-    private void Start()
+    [SerializeField] Item[] startingItems; //protected?
+    [SerializeField] Transform itemsParent;  //protected?
+       
+        
+    protected override void OnValidate()   //protect override ? inf inv? link to proc above
     {
-        for (int i = 0; i < itemSlots.Length; i++)
-        {
-            itemSlots[i].OnRightClickEvent += OnRightClickEvent;
-            itemSlots[i].OnBeginDragEvent += OnBeginDragEvent;
-            itemSlots[i].OnEndDragEvent += OnEndDragEvent;
-            itemSlots[i].OnDragEvent += OnDragEvent;
-            itemSlots[i].OnDropEvent += OnDropEvent;
-        }
+        if (itemsParent != null)
+            itemSlots = GetComponentsInChildren<ItemSlot>(includeInactive: true);//, result: ItemSlots);
+
         SetStartingItems();
     }
 
-    private void OnValidate()
+    protected override void Start()
     {
-        if (itemsParent != null)
-            itemSlots = itemsParent.GetComponentsInChildren<ItemSlot>();
-
+        base.Start();
         SetStartingItems();
     }
 
     private void SetStartingItems()
     {
-        int i = 0;
-        for (; i < startingItems.Length && i < itemSlots.Length; i++)
+        Clear();
+        foreach (Item item in startingItems)
         {
-            itemSlots[i].Item = startingItems[i].GetCopy();
-            itemSlots[i].Amount = 1;
-        }
-
-        for (; i < itemSlots.Length; i++)
-        {
-            itemSlots[i].Item = null;
-            itemSlots[i].Amount = 0;
+            AddItem(item.GetCopy());
         }
     }
 

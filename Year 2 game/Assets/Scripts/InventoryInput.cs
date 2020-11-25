@@ -13,6 +13,7 @@ public class InventoryInput : MonoBehaviour
             if (Input.GetKeyDown(toggleInventoryKeys[i]))
             {
                 characterPanel.SetActive(!characterPanel.activeSelf);
+                playerHud.SetActive(!characterPanel.activeSelf);
 
                 if (characterPanel.activeSelf)
                 {

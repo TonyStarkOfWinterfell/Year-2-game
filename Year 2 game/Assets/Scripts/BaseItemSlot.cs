@@ -16,8 +16,9 @@ public class BaseItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
 
     protected Color normalColor = Color.white;
     protected Color disabledColor = new Color(1, 1, 1, 0);
+    
 
-    //item needs an amount somewhere 
+   
     protected Item _item;
     public Item Item
     {
@@ -26,7 +27,7 @@ public class BaseItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
         {
             _item = value;
 
-            if (_item == null && Amount != 0) Amount = 0; //craftingUI non working fix?
+            if (_item == null && Amount != 0) Amount = 0; //p15
 
             if (_item == null)
             {
@@ -57,7 +58,7 @@ public class BaseItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
         {
             _amount = value;
             if (_amount < 0) _amount = 0;
-            if (_amount == 0) Item = null;
+            if (_amount == 0 && Item != null) Item = null;
 
             if (amountText != null)
             {
@@ -81,8 +82,8 @@ public class BaseItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
         if (amountText == null)
             amountText = GetComponentInChildren<Text>();
 
-        //Item = _item;
-        //Amount = _amount;
+        Item = _item;     //not sure what this does
+        Amount = _amount;
     }
     /*
     protected virtual void OnDisable()
@@ -117,7 +118,7 @@ public class BaseItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        //isPointerOver = true;
+        isPointerOver = true;
 
         if (OnPointerEnterEvent != null)
             OnPointerEnterEvent(this);
@@ -125,7 +126,7 @@ public class BaseItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        //isPointerOver = false;
+        isPointerOver = false;
 
         if (OnPointerExitEvent != null)
             OnPointerExitEvent(this);

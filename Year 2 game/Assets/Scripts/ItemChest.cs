@@ -56,6 +56,16 @@ public class ItemChest : MonoBehaviour
         CheckCollision(other.gameObject, false);
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        CheckCollision(collision.gameObject, true);
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        CheckCollision(collision.gameObject, false);
+    }
+
     private void CheckCollision(GameObject gameObject, bool state)
     {
         if (gameObject.CompareTag("Player"))

@@ -10,13 +10,12 @@ public enum EquipmentType
     Knife,
 }
 
-[CreateAssetMenu]
+[CreateAssetMenu(menuName = "Items/Equippable Item")]
 public class EquippableItem : Item
 {
     //[Space]
     public EquipmentType EquipmentType;
-    //variable for whats equiped
-
+    
     public override Item GetCopy()
     {
         return Instantiate(this);
@@ -27,14 +26,25 @@ public class EquippableItem : Item
         Destroy(this);
     }
 
+    
     public void Equip(Character c)
     {
-        //if variable = axe thenmine speed = minespeed*2??
+        
     }
 
     public void Unequip(Character c)
     {
-        //part 3 tutorial
+        
     }
+    
+    /*
+    public override string GetItemType()
+    {
+        return EquipmentType.ToString();
+    }
+
+
+    //extra stuff nott added for tool tips
+    */
 }
 

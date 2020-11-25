@@ -27,8 +27,8 @@ public class CraftingWindow : MonoBehaviour
 
         foreach (CraftingRecipeUI craftingRecipeUI in craftingRecipeUIs)
         {
-            craftingRecipeUI.OnPointerEnterEvent += OnPointerEnterEvent;
-            craftingRecipeUI.OnPointerExitEvent += OnPointerExitEvent;
+            //craftingRecipeUI.OnPointerEnterEvent += slot => OnPointerEnterEvent(slot);
+            //craftingRecipeUI.OnPointerExitEvent += slot => OnPointerExitEvent(slot);
         }
     }
 
@@ -48,12 +48,11 @@ public class CraftingWindow : MonoBehaviour
             }
             else if (craftingRecipeUIs[i] == null)
             {
-                craftingRecipeUIs[i] = Instantiate(recipeUIPrefab, recipeUIParent, true);
+                craftingRecipeUIs[i] = Instantiate(recipeUIPrefab, recipeUIParent, false);
             }
 
             craftingRecipeUIs[i].ItemContainer = ItemContainer;
             craftingRecipeUIs[i].CraftingRecipe = CraftingRecipes[i];
-
         }
 
         for (int i = CraftingRecipes.Count; i < craftingRecipeUIs.Count; i++)
@@ -62,3 +61,4 @@ public class CraftingWindow : MonoBehaviour
         }
     }
 }
+

@@ -8,7 +8,7 @@ public class EquipmentSlot : ItemSlot
     protected override void OnValidate()
     {
         base.OnValidate();
-        gameObject.name = EquipmentType.ToString() + "Slot";        
+        gameObject.name = EquipmentType.ToString() + " Slot";        
     }
 
     public override bool CanReceiveItem(Item item)

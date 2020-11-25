@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using UnityEditor;
+using System.Text;
 
-[CreateAssetMenu]
+[CreateAssetMenu(menuName = "Items/Item")]
 public class Item : ScriptableObject
 {
     [SerializeField] string id;
@@ -11,7 +12,7 @@ public class Item : ScriptableObject
     public int MaximumStacks = 1;
     public Sprite Icon;
 
-    private void OnValidate()
+    private void OnValidate()    // if unity editor - why have/nothave
     {
         string path = AssetDatabase.GetAssetPath(this);
         id = AssetDatabase.AssetPathToGUID(path);
@@ -26,4 +27,6 @@ public class Item : ScriptableObject
     {
         
     }
+
+    //get item type
 }

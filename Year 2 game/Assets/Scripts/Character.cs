@@ -3,8 +3,10 @@ using UnityEngine.UI;
 
 public class Character : MonoBehaviour
 {
-    public Inventory inventory;
-    public EquipmentPanel equipmentPanel;
+    public int Health = 50;
+
+    public Inventory Inventory;
+    public EquipmentPanel EquipmentPanel;
     [SerializeField] CraftingWindow craftingWindow;
     [SerializeField] Image draggableItem;
 
@@ -14,38 +16,47 @@ public class Character : MonoBehaviour
     {
         // Setup Events:
         // Right Click
-        inventory.OnRightClickEvent += Equip;
-        equipmentPanel.OnRightClickEvent += Unequip;
+        Inventory.OnRightClickEvent += InventoryRightClick;
+        EquipmentPanel.OnRightClickEvent += EquipmentPanelRightClick;
         // Begin Drag
-        inventory.OnBeginDragEvent += BeginDrag;
-        equipmentPanel.OnBeginDragEvent += BeginDrag;
+        Inventory.OnBeginDragEvent += BeginDrag;
+        EquipmentPanel.OnBeginDragEvent += BeginDrag;
         // End Drag
-        inventory.OnEndDragEvent += EndDrag;
-        equipmentPanel.OnEndDragEvent += EndDrag;
+        Inventory.OnEndDragEvent += EndDrag;
+        EquipmentPanel.OnEndDragEvent += EndDrag;
         // Drag
-        inventory.OnDragEvent += Drag;
-        equipmentPanel.OnDragEvent += Drag;
+        Inventory.OnDragEvent += Drag;
+        EquipmentPanel.OnDragEvent += Drag;
         // Drop
-        inventory.OnDropEvent += Drop;
-        equipmentPanel.OnDropEvent += Drop;
+        Inventory.OnDropEvent += Drop;
+        EquipmentPanel.OnDropEvent += Drop;
         
     }
 
-   private void Equip(BaseItemSlot itemSlot)
+    private void InventoryRightClick(BaseItemSlot itemSlot)
     {
-        EquippableItem equippableItem = itemSlot.Item as EquippableItem;
-        if (equippableItem != null)
+        if (itemSlot.Item is EquippableItem)
         {
-            Equip(equippableItem);
+            Equip((EquippableItem)itemSlot.Item);
+        }
+        else if (itemSlot.Item is UsableItem)
+        {
+            UsableItem usableItem = (UsableItem)itemSlot.Item;
+            usableItem.Use(this);
+
+            if (usableItem.IsConsumable)
+            {
+                itemSlot.Amount--;
+                usableItem.Destroy();
+            }
         }
     }
 
-    private void Unequip(BaseItemSlot itemSlot)
+    private void EquipmentPanelRightClick(BaseItemSlot itemSlot)
     {
-        EquippableItem equippableItem = itemSlot.Item as EquippableItem;
-        if (equippableItem != null)
+        if (itemSlot.Item is EquippableItem)
         {
-            Unequip(equippableItem);
+            Unequip((EquippableItem)itemSlot.Item);
         }
     }
 
@@ -56,24 +67,21 @@ public class Character : MonoBehaviour
             dragItemSlot = itemSlot;
             draggableItem.sprite = itemSlot.Item.Icon;
             draggableItem.transform.position = Input.mousePosition;
-            draggableItem.enabled = true;
+            draggableItem.gameObject.SetActive(true);
         }
     }
 
     private void EndDrag(BaseItemSlot itemSlot)
     {
         dragItemSlot = null;
-        draggableItem.enabled = false;
+        draggableItem.gameObject.SetActive(false);
     }
 
     private void Drag(BaseItemSlot itemSlot)
-    {
-        if (draggableItem.enabled)
-        {
-            draggableItem.transform.position = Input.mousePosition;
-        }
+    {       
+        draggableItem.transform.position = Input.mousePosition;        
     }
-    // chedk this out down
+    // chedk this out down > probably not relevant now
     private void Drop(BaseItemSlot dropItemSlot) 
     {
         if (dragItemSlot == null) return;
@@ -92,25 +100,25 @@ public class Character : MonoBehaviour
 
     private void SwapItems(BaseItemSlot dropItemSlot)
     {
-        EquippableItem dragItem = dragItemSlot.Item as EquippableItem;
-        EquippableItem dropItem = dropItemSlot.Item as EquippableItem;
+        EquippableItem dragEquipItem = dragItemSlot.Item as EquippableItem;
+        EquippableItem dropEquipItem = dropItemSlot.Item as EquippableItem;
 
-        if (dragItemSlot is EquipmentSlot)
-        {
-            if (dragItem != null) dragItem.Unequip(this);
-            if (dropItem != null) dropItem.Equip(this);
-        }
         if (dropItemSlot is EquipmentSlot)
         {
-            if (dragItem != null) dragItem.Equip(this);
-            if (dropItem != null) dropItem.Unequip(this);
+            if (dragEquipItem != null) dragEquipItem.Equip(this);
+            if (dropEquipItem != null) dropEquipItem.Unequip(this);
         }
-
+        if (dragItemSlot is EquipmentSlot)
+        {
+            if (dragEquipItem != null) dragEquipItem.Unequip(this);
+            if (dropEquipItem != null) dropEquipItem.Equip(this);
+        }
+        
         Item draggedItem = dragItemSlot.Item;
         int draggedItemAmount = dragItemSlot.Amount;
 
         dragItemSlot.Item = dropItemSlot.Item;
-        dropItemSlot.Amount = draggedItemAmount;
+        dragItemSlot.Amount = dropItemSlot.Amount;
 
         dropItemSlot.Item = draggedItem;
         dropItemSlot.Amount = draggedItemAmount;
@@ -132,29 +140,87 @@ public class Character : MonoBehaviour
 
     public void Equip(EquippableItem item)
     {
-        if (inventory.RemoveItem(item))
+        if (Inventory.RemoveItem(item))
         {
             EquippableItem previousItem;
-            if (equipmentPanel.AddItem(item, out previousItem))
+            if (EquipmentPanel.AddItem(item, out previousItem))
             {
                 if (previousItem != null)
                 {
-                    inventory.AddItem(previousItem);
+                    Inventory.AddItem(previousItem);
+                    previousItem.Unequip(this); //p15.5
                 }
+                item.Equip(this);    //p15.5 ^^
             }
             else
             {
-                inventory.AddItem(item);
+                Inventory.AddItem(item);
             }
         }
     }
 
     public void Unequip(EquippableItem item)
     {
-        if (!inventory.IsFull() && equipmentPanel.RemoveItem(item))
+        if (Inventory.CanAddItem(item) && EquipmentPanel.RemoveItem(item))
         {
-            inventory.AddItem(item);
+            item.Unequip(this);  //p15.5
+            Inventory.AddItem(item);
         }
     }
 
+
+
+
+
+    private ItemContainer openItemContainer;
+
+    private void TransferToItemContainer(BaseItemSlot itemSlot)
+    {
+        Item item = itemSlot.Item;
+        if (item != null && openItemContainer.CanAddItem(item))
+        {
+            Inventory.RemoveItem(item);
+            openItemContainer.AddItem(item);
+        }
+    }
+
+    private void TransferToInventory(BaseItemSlot itemSlot)
+    {
+        Item item = itemSlot.Item;
+        if (item != null && Inventory.CanAddItem(item))
+        {
+            openItemContainer.RemoveItem(item);
+            Inventory.AddItem(item);
+        }
+    }
+    
+    public void OpenItemContainer(ItemContainer itemContainer)
+    {
+        openItemContainer = itemContainer;
+
+        Inventory.OnRightClickEvent -= InventoryRightClick;
+        Inventory.OnRightClickEvent += TransferToItemContainer;
+
+        itemContainer.OnRightClickEvent += TransferToInventory;
+
+        itemContainer.OnBeginDragEvent += BeginDrag;
+        itemContainer.OnEndDragEvent += EndDrag;
+        itemContainer.OnDragEvent += Drag;
+        itemContainer.OnDropEvent += Drop;
+    }
+
+    public void CloseItemContainer(ItemContainer itemContainer)
+    {
+        openItemContainer = null;
+
+        Inventory.OnRightClickEvent += InventoryRightClick;
+        Inventory.OnRightClickEvent -= TransferToItemContainer;
+
+        itemContainer.OnRightClickEvent -= TransferToInventory;
+                
+        itemContainer.OnBeginDragEvent -= BeginDrag;
+        itemContainer.OnEndDragEvent -= EndDrag;
+        itemContainer.OnDragEvent -= Drag;
+        itemContainer.OnDropEvent -= Drop;
+    }
 }

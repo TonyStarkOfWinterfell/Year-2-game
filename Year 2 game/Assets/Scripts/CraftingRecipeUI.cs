@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class CraftingRecipeUI : MonoBehaviour
 {
@@ -9,7 +10,7 @@ public class CraftingRecipeUI : MonoBehaviour
     [SerializeField] BaseItemSlot[] itemSlots;
 
     [Header("Public Variables")]
-    public ItemContainer ItemContainer; // problem
+    public ItemContainer ItemContainer; 
 
 
     private CraftingRecipe craftingRecipe;
@@ -31,30 +32,17 @@ public class CraftingRecipeUI : MonoBehaviour
     {
         foreach (BaseItemSlot itemSlot in itemSlots)
         {
-            itemSlot.OnPointerEnterEvent += OnPointerEnterEvent;
-            itemSlot.OnPointerExitEvent += OnPointerExitEvent;
+            //itemSlot.OnPointerEnterEvent += slot => OnPointerEnterEvent(slot);
+            //itemSlot.OnPointerExitEvent += slot => OnPointerExitEvent(slot);
         }
     }
 
     public void OnCraftButtonClick()
     {
+        Debug.Log("button pressed");
         if (craftingRecipe != null && ItemContainer != null)
         {
-            if (craftingRecipe.CanCraft(ItemContainer))
-            {
-                if (!ItemContainer.IsFull())
-                {
-                    craftingRecipe.Craft(ItemContainer);
-                }
-                else
-                {
-                    Debug.LogError("Inventory is Full!");
-                }
-            }
-            else
-            {
-
-            }Debug.LogError("You don't have the required materials!");
+            craftingRecipe.Craft(ItemContainer);
         }
     }
 
@@ -89,7 +77,7 @@ public class CraftingRecipeUI : MonoBehaviour
             ItemAmount itemAmount = itemAmountList[i];
             BaseItemSlot itemSlot = itemSlots[slotIndex];
 
-            //itemSlot.Item = itemAmount.Item; //problem
+            itemSlot.Item = itemAmount.Item; 
             itemSlot.Amount = itemAmount.Amount;
             itemSlot.transform.parent.gameObject.SetActive(true);
             
