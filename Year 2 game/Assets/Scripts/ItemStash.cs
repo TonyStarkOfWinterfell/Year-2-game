@@ -17,12 +17,13 @@ public class ItemStash : ItemContainer
     protected override void OnValidate()
     {
         if (spriteRenderer == null)
-            spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+            spriteRenderer = GetComponentInChildren<SpriteRenderer>(includeInactive: true);
 
         if (itemsParent != null)
-            itemSlots = GetComponentsInChildren<ItemSlot>(includeInactive: true);//, result: itemSlots);
+            //itemsParent.GetComponentsInChildren(includeInactive: true, result: itemSlots);
+            //itemSlots = GetComponentsInChildren<ItemSlot>(includeInactive: true)
 
-        spriteRenderer.enabled = false;
+            spriteRenderer.enabled = false;
     }
 
     protected override void Awake()
@@ -44,8 +45,7 @@ public class ItemStash : ItemContainer
             {
                 character.OpenItemContainer(this);
                 
-            }
-                
+            }               
 
 
             else

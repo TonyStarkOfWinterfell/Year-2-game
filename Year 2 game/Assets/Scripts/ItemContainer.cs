@@ -48,7 +48,7 @@ public abstract class ItemContainer : MonoBehaviour, IItemContainer
     {
         for (int i = 0; i < itemSlots.Length; i++)
         {
-            if (itemSlots[i].CanAddStack(item)) //(itemSlots[i].Item.ID == item.ID && itemSlots[i].Amount < item.MaximumStacks))
+            if (itemSlots[i].CanAddStack(item))
             {
                 itemSlots[i].Item = item;
                 itemSlots[i].Amount++;
@@ -58,7 +58,7 @@ public abstract class ItemContainer : MonoBehaviour, IItemContainer
 
         for (int i = 0; i < itemSlots.Length; i++)
         {
-            if (itemSlots[i].Item == null) //(itemSlots[i].Item.ID == item.ID && itemSlots[i].Amount < item.MaximumStacks))
+            if (itemSlots[i].Item == null) 
             {
                 itemSlots[i].Item = item;
                 itemSlots[i].Amount++;
