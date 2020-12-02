@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class ItemContainer : MonoBehaviour, IItemContainer
 {
-    [SerializeField] protected ItemSlot[] itemSlots;
+    
 
     public event Action<BaseItemSlot> OnPointerEnterEvent;
     public event Action<BaseItemSlot> OnPointerExitEvent;
@@ -14,22 +14,30 @@ public abstract class ItemContainer : MonoBehaviour, IItemContainer
     public event Action<BaseItemSlot> OnDragEvent;
     public event Action<BaseItemSlot> OnDropEvent;
 
+    public List<ItemSlot> itemSlots;
+
     protected virtual void OnValidate()
     {
-       itemSlots = GetComponentsInChildren<ItemSlot>(includeInactive: true);//, result: ItemSlots);
+        GetComponentsInChildren(includeInactive: true, result: itemSlots);
     }
     protected virtual void Awake()
     {
-        for (int i = 0; i < itemSlots.Length; i++)
+        for (int i = 0; i < itemSlots.Count; i++)
         {
-            itemSlots[i].OnRightClickEvent += slot => OnRightClickEvent(slot);
-            itemSlots[i].OnBeginDragEvent += slot => OnBeginDragEvent(slot);
-            itemSlots[i].OnEndDragEvent += slot => OnEndDragEvent(slot);
-            itemSlots[i].OnDragEvent += slot => OnDragEvent(slot);
-            itemSlots[i].OnDropEvent += slot => OnDropEvent(slot);
+            itemSlots[i].OnRightClickEvent += slot => EventHelper(slot, OnRightClickEvent);
+            itemSlots[i].OnBeginDragEvent += slot => EventHelper(slot, OnBeginDragEvent);
+            itemSlots[i].OnEndDragEvent += slot => EventHelper(slot, OnEndDragEvent);
+            itemSlots[i].OnDragEvent += slot => EventHelper(slot, OnDragEvent);
+            itemSlots[i].OnDropEvent += slot => EventHelper(slot, OnDropEvent);
         }
     }
-            
+
+    private void EventHelper(BaseItemSlot itemSlot, Action<BaseItemSlot> action)
+    {
+        if (action != null)
+            action(itemSlot);
+    }
+
     public virtual bool CanAddItem(Item item, int amount = 1)
     {
         int freeSpaces = 0;
@@ -46,7 +54,7 @@ public abstract class ItemContainer : MonoBehaviour, IItemContainer
     }
     public virtual bool AddItem(Item item)
     {
-        for (int i = 0; i < itemSlots.Length; i++)
+        for (int i = 0; i < itemSlots.Count; i++)
         {
             if (itemSlots[i].CanAddStack(item))
             {
@@ -56,7 +64,7 @@ public abstract class ItemContainer : MonoBehaviour, IItemContainer
             }
         }
 
-        for (int i = 0; i < itemSlots.Length; i++)
+        for (int i = 0; i < itemSlots.Count; i++)
         {
             if (itemSlots[i].Item == null) 
             {
@@ -71,7 +79,7 @@ public abstract class ItemContainer : MonoBehaviour, IItemContainer
 
     public virtual bool RemoveItem(Item item)
     {
-        for (int i = 0; i < itemSlots.Length; i++)
+        for (int i = 0; i < itemSlots.Count; i++)
         {
             if (itemSlots[i].Item == item)
             {
@@ -85,7 +93,7 @@ public abstract class ItemContainer : MonoBehaviour, IItemContainer
 
     public virtual Item RemoveItem(string itemID)
     {
-        for (int i = 0; i < itemSlots.Length; i++)
+        for (int i = 0; i < itemSlots.Count; i++)
         {
             Item item = itemSlots[i].Item;
             if (item != null && item.ID == itemID)
@@ -103,7 +111,7 @@ public abstract class ItemContainer : MonoBehaviour, IItemContainer
     {
         int number = 0;
 
-        for (int i = 0; i < itemSlots.Length; i++)
+        for (int i = 0; i < itemSlots.Count; i++)
         {
             Item item = itemSlots[i].Item;
             if (item != null && item.ID == itemID)
@@ -116,7 +124,7 @@ public abstract class ItemContainer : MonoBehaviour, IItemContainer
 
     public virtual void Clear()
     {
-        for (int i = 0; i < itemSlots.Length; i++)
+        for (int i = 0; i < itemSlots.Count; i++)
         {
             //if aplication statement
 

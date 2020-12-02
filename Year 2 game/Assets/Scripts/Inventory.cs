@@ -3,14 +3,14 @@
 
 public class Inventory : ItemContainer
 {
-    [SerializeField] Item[] startingItems; //protected?
-    [SerializeField] Transform itemsParent;  //protected?
+    [SerializeField] Item[] startingItems; 
+    [SerializeField] Transform itemsParent; 
        
         
-    protected override void OnValidate()   //protect override ? inf inv? link to proc above
+    protected override void OnValidate()   
     {
         if (itemsParent != null)
-            itemSlots = GetComponentsInChildren<ItemSlot>(includeInactive: true);//, result: ItemSlots);
+            itemsParent.GetComponentsInChildren(includeInactive: true, result: itemSlots);
 
         SetStartingItems();
     }

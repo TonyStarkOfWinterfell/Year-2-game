@@ -85,15 +85,7 @@ public class BaseItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
         Item = _item;     //not sure what this does
         Amount = _amount;
     }
-    /*
-    protected virtual void OnDisable()
-    {
-        if (isPointerOver)
-        {
-            OnPointerExit(null);
-        }
-    }
-    */
+    
 
     public virtual bool CanAddStack(Item item, int amount = 1)
     {

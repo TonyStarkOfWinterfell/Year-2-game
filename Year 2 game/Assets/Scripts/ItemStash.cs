@@ -20,8 +20,8 @@ public class ItemStash : ItemContainer
             spriteRenderer = GetComponentInChildren<SpriteRenderer>(includeInactive: true);
 
         if (itemsParent != null)
-            //itemsParent.GetComponentsInChildren(includeInactive: true, result: itemSlots);
-            //itemSlots = GetComponentsInChildren<ItemSlot>(includeInactive: true)
+            itemsParent.GetComponentsInChildren(includeInactive: true, result: itemSlots);
+            //itemSlots = GetComponentsInChildren<ItemSlot>(includeInactive: true);
 
             spriteRenderer.enabled = false;
     }
