@@ -14,6 +14,9 @@ public class Character : MonoBehaviour
 
     private BaseItemSlot dragItemSlot;
 
+    public GameObject weapon;
+    public bool equipped;
+
     private void Awake()
     {
         // Setup Events:

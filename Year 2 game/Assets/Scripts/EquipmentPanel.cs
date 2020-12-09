@@ -6,6 +6,7 @@ public class EquipmentPanel : MonoBehaviour
     [SerializeField] Transform equipmentSlotsParent;
     public EquipmentSlot[] EquipmentSlots;
 
+            
     public event Action<BaseItemSlot> OnPointerEnterEvent;
     public event Action<BaseItemSlot> OnPointerExitEvent;
     public event Action<BaseItemSlot> OnRightClickEvent;
@@ -36,13 +37,30 @@ public class EquipmentPanel : MonoBehaviour
 
     public bool AddItem(EquippableItem item, out EquippableItem previousItem)
     {
+        Debug.Log("start swap diddy doodat");
         for (int i = 0; i < EquipmentSlots.Length; i++)
         {
             if (EquipmentSlots[i].EquipmentType == item.EquipmentType)
             {
+
+
+
+                
+                if (item.equipmentType == EquippableItem.EquipmentType.Weapon)
+                {
+                    Debug.Log(item.EquipmentType);                    
+                }
+
+                //Debug.Log(item.EquipmentType);
+
+
+
+                Debug.Log("add item loop");
                 previousItem = (EquippableItem)EquipmentSlots[i].Item;
                 EquipmentSlots[i].Item = item;
                 EquipmentSlots[i].Amount = 1;
+
+                
                 return true;
             }
         }
