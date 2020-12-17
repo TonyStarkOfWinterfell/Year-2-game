@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: eb0162ebfc9cb9442a2abf967a9319f4
+guid: 59a808d57debd684385efd44e4593e1e
 ModelImporter:
   serializedVersion: 19301
   internalIDToNameTable: []
@@ -7,13 +7,8 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: blinn1SG
-    second: {fileID: 2100000, guid: fbeb48ce2687a4f498c43eb5c5cf0c4d, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: blinn2SG
-    second: {fileID: 2100000, guid: c47f762f48685ca4eb6f00f4de3ef289, type: 2}
+      name: Crate_material
+    second: {fileID: 2100000, guid: b5bd2678f36e79b46aa439d3fbb98787, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0

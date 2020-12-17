@@ -37,30 +37,22 @@ public class EquipmentPanel : MonoBehaviour
 
     public bool AddItem(EquippableItem item, out EquippableItem previousItem)
     {
-        Debug.Log("start swap diddy doodat");
+        // add item to equip pannel vvv
         for (int i = 0; i < EquipmentSlots.Length; i++)
         {
             if (EquipmentSlots[i].EquipmentType == item.EquipmentType)
-            {
-
-
-
-                
-                if (item.equipmentType == EquippableItem.EquipmentType.Weapon)
+            {                                
+                /*
+                if (item.EquipmentType == EquippableItem.EquipmentType.Weapon)
                 {
                     Debug.Log(item.EquipmentType);                    
-                }
-
-                //Debug.Log(item.EquipmentType);
-
-
-
+                }*/                
                 Debug.Log("add item loop");
+
+
                 previousItem = (EquippableItem)EquipmentSlots[i].Item;
                 EquipmentSlots[i].Item = item;
-                EquipmentSlots[i].Amount = 1;
-
-                
+                EquipmentSlots[i].Amount = 1;                
                 return true;
             }
         }

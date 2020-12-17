@@ -1,23 +1,19 @@
 ﻿using UnityEngine;
 
+public enum EquipmentType
+{
+    Helmet,
+    Weapon,
+    Shield,
+    Body,
+    Knife,
+}
 
-
-//[CreateAssetMenu(menuName = "Items/Equippable Item")]
+[CreateAssetMenu(menuName = "Items/Equippable Item")]
 public class EquippableItem : Item
 {
-    
-    public enum EquipmentType
-    {
-        Helmet,
-        Weapon,
-        Shield,
-        Body,
-        Knife,
-    }
-
-
     //[Space]
-    public EquipmentType equipmentType;
+    public EquipmentType EquipmentType;
     
     public override Item GetCopy()
     {
