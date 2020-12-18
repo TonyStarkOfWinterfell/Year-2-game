@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
-using UnityEditor;
 using System.Text;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 [CreateAssetMenu(menuName = "Items/Item")]
 public class Item : ScriptableObject
@@ -12,11 +14,13 @@ public class Item : ScriptableObject
     public int MaximumStacks = 1;
     public Sprite Icon;
 
-    private void OnValidate()    // if unity editor - why have/nothave
+    #if UNITY_EDITOR
+    protected virtual void OnValidate()
     {
         string path = AssetDatabase.GetAssetPath(this);
         id = AssetDatabase.AssetPathToGUID(path);
     }
+    #endif
 
     public virtual Item GetCopy()
     {
